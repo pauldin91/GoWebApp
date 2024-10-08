@@ -10,5 +10,12 @@
 <body>
 <h1>This is the about page</h1>
 <p>Text from {{index .StringMap "test" }}</p>
+<p>
+    {{if ne (index .StringMap "remote_ip") ""}}
+        your remote IP is {{index .StringMap "remote_ip"}}
+    {{else}}
+        click <a href="/">here</a> to learn it
+    {{end}}
+</p>
 </body>
 </html>
