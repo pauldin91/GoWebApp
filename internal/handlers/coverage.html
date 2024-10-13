@@ -1,0 +1,270 @@
+
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+		<title>handlers: Go Coverage Report</title>
+		<style>
+			body {
+				background: black;
+				color: rgb(80, 80, 80);
+			}
+			body, pre, #legend span {
+				font-family: Menlo, monospace;
+				font-weight: bold;
+			}
+			#topbar {
+				background: black;
+				position: fixed;
+				top: 0; left: 0; right: 0;
+				height: 42px;
+				border-bottom: 1px solid rgb(80, 80, 80);
+			}
+			#content {
+				margin-top: 50px;
+			}
+			#nav, #legend {
+				float: left;
+				margin-left: 10px;
+			}
+			#legend {
+				margin-top: 12px;
+			}
+			#nav {
+				margin-top: 10px;
+			}
+			#legend span {
+				margin: 0 5px;
+			}
+			.cov0 { color: rgb(192, 0, 0) }
+.cov1 { color: rgb(128, 128, 128) }
+.cov2 { color: rgb(116, 140, 131) }
+.cov3 { color: rgb(104, 152, 134) }
+.cov4 { color: rgb(92, 164, 137) }
+.cov5 { color: rgb(80, 176, 140) }
+.cov6 { color: rgb(68, 188, 143) }
+.cov7 { color: rgb(56, 200, 146) }
+.cov8 { color: rgb(44, 212, 149) }
+.cov9 { color: rgb(32, 224, 152) }
+.cov10 { color: rgb(20, 236, 155) }
+
+		</style>
+	</head>
+	<body>
+		<div id="topbar">
+			<div id="nav">
+				<select id="files">
+				
+				<option value="file0">github.com/pauldin91/GoWebApp/internal/handlers/handlers.go (67.3%)</option>
+				
+				</select>
+			</div>
+			<div id="legend">
+				<span>not tracked</span>
+			
+				<span class="cov0">not covered</span>
+				<span class="cov8">covered</span>
+			
+			</div>
+		</div>
+		<div id="content">
+		
+		<pre class="file" id="file0" style="display: none">package handlers
+
+import (
+        "encoding/json"
+        "fmt"
+        "log"
+        "net/http"
+
+        "github.com/pauldin91/GoWebApp/internal/cfg"
+        "github.com/pauldin91/GoWebApp/internal/forms"
+        "github.com/pauldin91/GoWebApp/internal/models"
+        "github.com/pauldin91/GoWebApp/internal/render"
+)
+
+// Repo the repository used by the handlers
+var Repo *Repository
+
+// Repository is the repository type
+type Repository struct {
+        App *cfg.AppConfig
+}
+
+// NewRepo creates a new repository
+func NewRepo(a *cfg.AppConfig) *Repository <span class="cov8" title="1">{
+        return &amp;Repository{
+                App: a,
+        }
+}</span>
+
+// NewHandlers sets the repository for the handlers
+func NewHandlers(r *Repository) <span class="cov8" title="1">{
+        Repo = r
+}</span>
+
+// Home is the handler for the home page
+func (m *Repository) Home(w http.ResponseWriter, r *http.Request) <span class="cov8" title="1">{
+        remoteIP := r.RemoteAddr
+        m.App.Session.Put(r.Context(), "remote_ip", remoteIP)
+
+        render.RenderTemplate(w, r, "home.page.tmpl", &amp;models.TemplateData{})
+}</span>
+
+// About is the handler for the about page
+func (m *Repository) About(w http.ResponseWriter, r *http.Request) <span class="cov8" title="1">{
+        // perform some logic
+        stringMap := make(map[string]string)
+        stringMap["test"] = "Hello, again"
+
+        remoteIP := m.App.Session.GetString(r.Context(), "remote_ip")
+        stringMap["remote_ip"] = remoteIP
+
+        // send data to the template
+        render.RenderTemplate(w, r, "about.page.tmpl", &amp;models.TemplateData{
+                StringMap: stringMap,
+        })
+}</span>
+
+// Reservation renders the make a reservation page and displays form
+func (m *Repository) Reservation(w http.ResponseWriter, r *http.Request) <span class="cov0" title="0">{
+        var emptyReservation models.Reservation
+
+        data := make(map[string]interface{})
+        data["reservation"] = emptyReservation
+
+        render.RenderTemplate(w, r, "make-reservation.page.tmpl", &amp;models.TemplateData{
+                Form: forms.New(nil),
+                Data: data,
+        })
+}</span>
+
+// PostReservation handles the posting of a reservation form
+func (m *Repository) PostReservation(w http.ResponseWriter, r *http.Request) <span class="cov8" title="1">{
+        err := r.ParseForm()
+        if err != nil </span><span class="cov0" title="0">{
+                log.Println(err)
+                return
+        }</span>
+
+        <span class="cov8" title="1">reservation := models.Reservation{
+                FirstName: r.Form.Get("first_name"),
+                LastName:  r.Form.Get("last_name"),
+                Email:     r.Form.Get("email"),
+                Phone:     r.Form.Get("phone"),
+        }
+
+        form := forms.New(r.PostForm)
+
+        form.Required("first_name", "last_name", "email")
+        form.MinLength("first_name", 3, r)
+        form.IsEmail("email")
+
+        if !form.Valid() </span><span class="cov0" title="0">{
+                data := make(map[string]interface{})
+                data["reservation"] = reservation
+                render.RenderTemplate(w, r, "make-reservation.page.tmpl", &amp;models.TemplateData{
+                        Form: form,
+                        Data: data,
+                })
+                return
+        }</span>
+        <span class="cov8" title="1">m.App.Session.Put(r.Context(), "reservation", reservation)
+        http.Redirect(w, r, "/reservation-summary", http.StatusSeeOther)</span>
+}
+
+// Generals renders the room page
+func (m *Repository) Generals(w http.ResponseWriter, r *http.Request) <span class="cov8" title="1">{
+        render.RenderTemplate(w, r, "generals.page.tmpl", &amp;models.TemplateData{})
+}</span>
+
+// Majors renders the room page
+func (m *Repository) Majors(w http.ResponseWriter, r *http.Request) <span class="cov8" title="1">{
+        render.RenderTemplate(w, r, "majors.page.tmpl", &amp;models.TemplateData{})
+}</span>
+
+// Availability renders the search availability page
+func (m *Repository) Availability(w http.ResponseWriter, r *http.Request) <span class="cov0" title="0">{
+        render.RenderTemplate(w, r, "search-availability.page.tmpl", &amp;models.TemplateData{})
+}</span>
+
+// PostAvailability handles post
+func (m *Repository) PostAvailability(w http.ResponseWriter, r *http.Request) <span class="cov8" title="1">{
+        start := r.Form.Get("start")
+        end := r.Form.Get("end")
+
+        w.Write([]byte(fmt.Sprintf("start date is %s and end is %s", start, end)))
+}</span>
+
+type jsonResponse struct {
+        OK      bool   `json:"ok"`
+        Message string `json:"message"`
+}
+
+// AvailabilityJSON handles request for availability and sends JSON response
+func (m *Repository) AvailabilityJson(w http.ResponseWriter, r *http.Request) <span class="cov8" title="1">{
+        resp := jsonResponse{
+                OK:      true,
+                Message: "Available!",
+        }
+
+        out, err := json.MarshalIndent(resp, "", "     ")
+        if err != nil </span><span class="cov0" title="0">{
+                log.Println(err)
+        }</span>
+
+        <span class="cov8" title="1">w.Header().Set("Content-Type", "application/json")
+        w.Write(out)</span>
+}
+
+// Contact renders the contact page
+func (m *Repository) Contact(w http.ResponseWriter, r *http.Request) <span class="cov0" title="0">{
+        render.RenderTemplate(w, r, "contact.page.tmpl", &amp;models.TemplateData{})
+}</span>
+
+func (m *Repository) Summary(w http.ResponseWriter, r *http.Request) <span class="cov8" title="1">{
+        reservation, ok := m.App.Session.Get(r.Context(), "reservation").(models.Reservation)
+        if !ok </span><span class="cov8" title="1">{
+                m.App.Session.Put(r.Context(), "error", "Can't get reservation from session")
+                http.Redirect(w, r, "/", http.StatusTemporaryRedirect)
+                return
+        }</span>
+        <span class="cov0" title="0">m.App.Session.Remove(r.Context(), "reservation")
+        data := make(map[string]interface{})
+        data["reservation"] = reservation
+        render.RenderTemplate(w, r, "reservation-summary.page.tmpl", &amp;models.TemplateData{
+                Data: data,
+        })</span>
+}
+</pre>
+		
+		</div>
+	</body>
+	<script>
+	(function() {
+		var files = document.getElementById('files');
+		var visible;
+		files.addEventListener('change', onChange, false);
+		function select(part) {
+			if (visible)
+				visible.style.display = 'none';
+			visible = document.getElementById(part);
+			if (!visible)
+				return;
+			files.value = part;
+			visible.style.display = 'block';
+			location.hash = part;
+		}
+		function onChange() {
+			select(files.value);
+			window.scrollTo(0, 0);
+		}
+		if (location.hash != "") {
+			select(location.hash.substr(1));
+		}
+		if (!visible) {
+			select("file0");
+		}
+	})();
+	</script>
+</html>

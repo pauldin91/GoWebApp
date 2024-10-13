@@ -2,6 +2,7 @@ package render
 
 import (
 	"encoding/gob"
+	"log"
 	"net/http"
 	"os"
 	"testing"
@@ -18,6 +19,10 @@ var testApp cfg.AppConfig
 func TestMain(m *testing.M) {
 	gob.Register(models.Reservation{})
 	testApp.InProduction = false
+
+	testApp.InfoLog = log.New(os.Stdout, "INFO\t", log.Ldate|log.Ltime)
+	testApp.ErrorLog = log.New(os.Stdout, "ERROR\t", log.Ldate|log.Ltime|log.Lshortfile)
+
 	// set up the session
 	session = scs.New()
 	session.Lifetime = 24 * time.Hour

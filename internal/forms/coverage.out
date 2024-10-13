@@ -1,0 +1,19 @@
+mode: set
+github.com/pauldin91/GoWebApp/internal/forms/errors.go:5.44,7.2 1 1
+github.com/pauldin91/GoWebApp/internal/forms/errors.go:9.42,11.18 2 0
+github.com/pauldin91/GoWebApp/internal/forms/errors.go:11.18,13.3 1 0
+github.com/pauldin91/GoWebApp/internal/forms/errors.go:14.2,14.14 1 0
+github.com/pauldin91/GoWebApp/internal/forms/forms.go:16.33,21.2 1 1
+github.com/pauldin91/GoWebApp/internal/forms/forms.go:23.39,25.13 2 1
+github.com/pauldin91/GoWebApp/internal/forms/forms.go:25.13,27.3 1 1
+github.com/pauldin91/GoWebApp/internal/forms/forms.go:28.2,28.13 1 1
+github.com/pauldin91/GoWebApp/internal/forms/forms.go:31.29,33.2 1 1
+github.com/pauldin91/GoWebApp/internal/forms/forms.go:35.43,36.31 1 1
+github.com/pauldin91/GoWebApp/internal/forms/forms.go:36.31,38.37 2 1
+github.com/pauldin91/GoWebApp/internal/forms/forms.go:38.37,40.4 1 1
+github.com/pauldin91/GoWebApp/internal/forms/forms.go:44.57,46.21 2 1
+github.com/pauldin91/GoWebApp/internal/forms/forms.go:46.21,49.3 2 1
+github.com/pauldin91/GoWebApp/internal/forms/forms.go:50.2,50.13 1 1
+github.com/pauldin91/GoWebApp/internal/forms/forms.go:53.43,54.40 1 1
+github.com/pauldin91/GoWebApp/internal/forms/forms.go:54.40,57.3 2 1
+github.com/pauldin91/GoWebApp/internal/forms/forms.go:58.2,58.13 1 1
