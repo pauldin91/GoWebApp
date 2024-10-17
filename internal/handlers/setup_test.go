@@ -15,6 +15,7 @@ import (
 	"github.com/go-chi/chi/middleware"
 	"github.com/justinas/nosurf"
 	"github.com/pauldin91/GoWebApp/internal/cfg"
+	"github.com/pauldin91/GoWebApp/internal/driver"
 	"github.com/pauldin91/GoWebApp/internal/models"
 	"github.com/pauldin91/GoWebApp/internal/render"
 )
@@ -49,10 +50,10 @@ func getRoutes() http.Handler {
 	app.TemplateCache = tc
 	app.UseCache = true
 
-	repo := NewRepo(&app)
+	repo := NewRepo(&app, &driver.Db{})
 	NewHandlers(repo)
 
-	render.NewTemplates(&app)
+	render.NewRenderer(&app)
 
 	mux := chi.NewRouter()
 
