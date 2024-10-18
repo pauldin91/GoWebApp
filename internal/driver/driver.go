@@ -9,41 +9,47 @@ import (
 	_ "github.com/jackc/pgx/v4/stdlib"
 )
 
-type Db struct {
+// DB holds the database connection pool
+type DB struct {
 	SQL *sql.DB
 }
 
-var dbCon = &Db{}
+var dbConn = &DB{}
 
-const maxOpenCon = 10
-const maxIdleCon = 5
-const maxDbLife = 5 * time.Minute
+const maxOpenDbConn = 10
+const maxIdleDbConn = 5
+const maxDbLifetime = 5 * time.Minute
 
-func ConnectSQL(dsn string) (*Db, error) {
+// ConnectSQL creates database pool for Postgres
+func ConnectSQL(dsn string) (*DB, error) {
 	d, err := NewDatabase(dsn)
 	if err != nil {
 		panic(err)
 	}
-	d.SetMaxOpenConns(maxOpenCon)
-	d.SetMaxIdleConns(maxIdleCon)
-	d.SetConnMaxLifetime(maxDbLife)
-	dbCon.SQL = d
+
+	d.SetMaxOpenConns(maxOpenDbConn)
+	d.SetMaxIdleConns(maxIdleDbConn)
+	d.SetConnMaxLifetime(maxDbLifetime)
+
+	dbConn.SQL = d
+
 	err = testDB(d)
 	if err != nil {
 		return nil, err
 	}
-	return dbCon, nil
+	return dbConn, nil
 }
 
+// testDB tries to ping the database
 func testDB(d *sql.DB) error {
 	err := d.Ping()
 	if err != nil {
 		return err
 	}
 	return nil
-
 }
 
+// NewDatabase creates a new database for the application
 func NewDatabase(dsn string) (*sql.DB, error) {
 	db, err := sql.Open("pgx", dsn)
 	if err != nil {
@@ -53,5 +59,6 @@ func NewDatabase(dsn string) (*sql.DB, error) {
 	if err = db.Ping(); err != nil {
 		return nil, err
 	}
+
 	return db, nil
 }

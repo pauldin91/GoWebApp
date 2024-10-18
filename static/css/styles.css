@@ -3,16 +3,12 @@
     background-color: #163b65;
     margin-top: 1.5em;
     padding: 1em;
-    color: white;
+    color: #FFFFFF;
     font-size: 80%;
 }
 
 .room-image {
     max-width: 50%;
-}
-
-.notie-container {
-    box-shadow: none;
 }
 
 .datepicker {

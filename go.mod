@@ -1,30 +1,13 @@
-module github.com/pauldin91/GoWebApp
+module github.com/tsawler/bookings
 
-go 1.23.1
+go 1.15
 
 require (
-	github.com/alexedwards/scs/v2 v2.8.0
-	github.com/asaskevich/govalidator v0.0.0-20230301143203-a9d515a09cc2
-	github.com/go-chi/chi v1.5.5
+	github.com/alexedwards/scs/v2 v2.4.0
+	github.com/asaskevich/govalidator v0.0.0-20200907205600-7a23bdc65eef
+	github.com/go-chi/chi v4.1.2+incompatible
+	github.com/jackc/pgconn v1.7.2
+	github.com/jackc/pgx/v4 v4.9.2
 	github.com/justinas/nosurf v1.1.1
-)
-
-require (
-	github.com/jackc/chunkreader/v2 v2.0.1 // indirect
-	github.com/jackc/pgio v1.0.0 // indirect
-	github.com/jackc/pgpassfile v1.0.0 // indirect
-	github.com/jackc/pgproto3/v2 v2.3.3 // indirect
-	github.com/jackc/pgservicefile v0.0.0-20221227161230-091c0ba34f0a // indirect
-	github.com/jackc/pgtype v1.14.0 // indirect
-)
-
-require (
-	github.com/jackc/pgconn v1.14.3
-	github.com/jackc/pgx/v4 v4.18.3
-	github.com/pkg/errors v0.9.1 // indirect
-	golang.org/x/crypto v0.28.0 // indirect
-	golang.org/x/sys v0.26.0 // indirect
-	golang.org/x/text v0.19.0 // indirect
-	golang.org/x/tools v0.21.1-0.20240508182429-e35e4ccd0d2d // indirect
-	golang.org/x/tools/cmd/cover v0.1.0-deprecated // indirect
+	golang.org/x/net v0.0.0-20201110031124-69a78807bb2b // indirect
 )

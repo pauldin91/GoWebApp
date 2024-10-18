@@ -2,19 +2,29 @@ package dbrepo
 
 import (
 	"database/sql"
-
-	"github.com/pauldin91/GoWebApp/internal/cfg"
-	"github.com/pauldin91/GoWebApp/internal/repository"
+	"github.com/tsawler/bookings/internal/config"
+	"github.com/tsawler/bookings/internal/repository"
 )
 
-type postgresDbRepo struct {
-	App *cfg.AppConfig
+type postgresDBRepo struct {
+	App *config.AppConfig
 	DB  *sql.DB
 }
 
-func NewPostgresRepo(conn *sql.DB, a *cfg.AppConfig) repository.DatabaseRepo {
-	return &postgresDbRepo{
-		App:a,
-		DB:conn,
+type testDBRepo struct {
+	App *config.AppConfig
+	DB *sql.DB
+}
+
+func NewPostgresRepo(conn *sql.DB, a *config.AppConfig) repository.DatabaseRepo {
+	return &postgresDBRepo{
+		App: a,
+		DB:  conn,
+	}
+}
+
+func NewTestingsRepo(a *config.AppConfig) repository.DatabaseRepo {
+	return &testDBRepo{
+		App: a,
 	}
 }

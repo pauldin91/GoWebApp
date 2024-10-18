@@ -1,8 +1,16 @@
 package repository
 
-import "github.com/pauldin91/GoWebApp/internal/models"
+import (
+	"github.com/tsawler/bookings/internal/models"
+	"time"
+)
 
 type DatabaseRepo interface {
 	AllUsers() bool
-	Insert(res models.Reservation) error
+
+	InsertReservation(res models.Reservation) (int, error)
+	InsertRoomRestriction(r models.RoomRestriction) error
+	SearchAvailabilityByDatesByRoomID(start, end time.Time, roomID int) (bool, error)
+	SearchAvailabilityForAllRooms(start, end time.Time) ([]models.Room, error)
+	GetRoomByID(id int) (models.Room, error)
 }

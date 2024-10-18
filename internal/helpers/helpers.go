@@ -2,20 +2,20 @@ package helpers
 
 import (
 	"fmt"
+	"github.com/tsawler/bookings/internal/config"
 	"net/http"
 	"runtime/debug"
-
-	"github.com/pauldin91/GoWebApp/internal/cfg"
 )
 
-var app *cfg.AppConfig
+var app *config.AppConfig
 
-func NewHelpers(a *cfg.AppConfig) {
+// NewHelpers sets up app config for helpers
+func NewHelpers(a *config.AppConfig) {
 	app = a
 }
 
 func ClientError(w http.ResponseWriter, status int) {
-	app.InfoLog.Println("Client error with status of ", status)
+	app.InfoLog.Println("Client error with status of", status)
 	http.Error(w, http.StatusText(status), status)
 }
 

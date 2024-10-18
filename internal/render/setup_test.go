@@ -2,28 +2,33 @@ package render
 
 import (
 	"encoding/gob"
+	"github.com/alexedwards/scs/v2"
+	"github.com/tsawler/bookings/internal/config"
+	"github.com/tsawler/bookings/internal/models"
 	"log"
 	"net/http"
 	"os"
 	"testing"
 	"time"
-
-	"github.com/alexedwards/scs/v2"
-	"github.com/pauldin91/GoWebApp/internal/cfg"
-	"github.com/pauldin91/GoWebApp/internal/models"
 )
 
 var session *scs.SessionManager
-var testApp cfg.AppConfig
+var testApp config.AppConfig
 
 func TestMain(m *testing.M) {
+
+	// what am I going to put in the session
 	gob.Register(models.Reservation{})
+
+	// change this to true when in production
 	testApp.InProduction = false
 
-	testApp.InfoLog = log.New(os.Stdout, "INFO\t", log.Ldate|log.Ltime)
-	testApp.ErrorLog = log.New(os.Stdout, "ERROR\t", log.Ldate|log.Ltime|log.Lshortfile)
+	infoLog := log.New(os.Stdout, "INFO\t", log.Ldate|log.Ltime)
+	testApp.InfoLog = infoLog
 
-	// set up the session
+	errorLog := log.New(os.Stdout, "ERROR\t", log.Ldate|log.Ltime|log.Lshortfile)
+	testApp.ErrorLog = errorLog
+
 	session = scs.New()
 	session.Lifetime = 24 * time.Hour
 	session.Cookie.Persist = true
@@ -39,13 +44,16 @@ func TestMain(m *testing.M) {
 
 type myWriter struct{}
 
-func (m *myWriter) Header() http.Header {
-	return http.Header{}
+func (tw *myWriter) Header() http.Header {
+	var h http.Header
+	return h
 }
-func (m *myWriter) WriteHeader(i int) {
+
+func (tw *myWriter) WriteHeader(i int) {
 
 }
-func (m *myWriter) Write(b []byte) (int, error) {
+
+func (tw *myWriter) Write(b []byte) (int, error) {
 	length := len(b)
 	return length, nil
 }
