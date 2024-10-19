@@ -1,8 +1,9 @@
 package repository
 
 import (
-	"github.com/tsawler/bookings/internal/models"
 	"time"
+
+	"github.com/pauldin91/GoWebApp/internal/models"
 )
 
 type DatabaseRepo interface {

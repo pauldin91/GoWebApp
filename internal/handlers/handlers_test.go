@@ -3,8 +3,6 @@ package handlers
 import (
 	"context"
 	"encoding/json"
-	"github.com/tsawler/bookings/internal/driver"
-	"github.com/tsawler/bookings/internal/models"
 	"log"
 	"net/http"
 	"net/http/httptest"
@@ -12,6 +10,9 @@ import (
 	"reflect"
 	"strings"
 	"testing"
+
+	"github.com/pauldin91/GoWebApp/internal/driver"
+	"github.com/pauldin91/GoWebApp/internal/models"
 )
 
 type postData struct {

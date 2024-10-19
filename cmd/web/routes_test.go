@@ -3,7 +3,7 @@ package main
 import (
 	"fmt"
 	"github.com/go-chi/chi"
-	"github.com/tsawler/bookings/internal/config"
+	"github.com/pauldin91/GoWebApp/internal/config"
 	"testing"
 )
 

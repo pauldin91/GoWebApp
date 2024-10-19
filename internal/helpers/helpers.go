@@ -2,7 +2,7 @@ package helpers
 
 import (
 	"fmt"
-	"github.com/tsawler/bookings/internal/config"
+	"github.com/pauldin91/GoWebApp/internal/config"
 	"net/http"
 	"runtime/debug"
 )

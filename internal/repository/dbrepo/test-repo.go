@@ -2,9 +2,10 @@ package dbrepo
 
 import (
 	"errors"
-	"github.com/tsawler/bookings/internal/models"
 	"log"
 	"time"
+
+	"github.com/pauldin91/GoWebApp/internal/models"
 )
 
 func (m *testDBRepo) AllUsers() bool {

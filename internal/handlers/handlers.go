@@ -2,17 +2,18 @@ package handlers
 
 import (
 	"encoding/json"
-	"github.com/tsawler/bookings/internal/config"
-	"github.com/tsawler/bookings/internal/driver"
-	"github.com/tsawler/bookings/internal/forms"
-	"github.com/tsawler/bookings/internal/models"
-	"github.com/tsawler/bookings/internal/render"
-	"github.com/tsawler/bookings/internal/repository"
-	"github.com/tsawler/bookings/internal/repository/dbrepo"
 	"net/http"
 	"strconv"
 	"strings"
 	"time"
+
+	"github.com/pauldin91/GoWebApp/internal/config"
+	"github.com/pauldin91/GoWebApp/internal/driver"
+	"github.com/pauldin91/GoWebApp/internal/forms"
+	"github.com/pauldin91/GoWebApp/internal/models"
+	"github.com/pauldin91/GoWebApp/internal/render"
+	"github.com/pauldin91/GoWebApp/internal/repository"
+	"github.com/pauldin91/GoWebApp/internal/repository/dbrepo"
 )
 
 // Repo the repository used by the handlers
@@ -45,7 +46,7 @@ func NewHandlers(r *Repository) {
 	Repo = r
 }
 
-//Home is the home page handler
+// Home is the home page handler
 func (m *Repository) Home(w http.ResponseWriter, r *http.Request) {
 	render.Template(w, r, "home.page.tmpl", &models.TemplateData{})
 }

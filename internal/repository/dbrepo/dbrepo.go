@@ -2,8 +2,9 @@ package dbrepo
 
 import (
 	"database/sql"
-	"github.com/tsawler/bookings/internal/config"
-	"github.com/tsawler/bookings/internal/repository"
+
+	"github.com/pauldin91/GoWebApp/internal/config"
+	"github.com/pauldin91/GoWebApp/internal/repository"
 )
 
 type postgresDBRepo struct {
@@ -13,7 +14,7 @@ type postgresDBRepo struct {
 
 type testDBRepo struct {
 	App *config.AppConfig
-	DB *sql.DB
+	DB  *sql.DB
 }
 
 func NewPostgresRepo(conn *sql.DB, a *config.AppConfig) repository.DatabaseRepo {

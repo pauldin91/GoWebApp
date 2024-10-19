@@ -2,14 +2,15 @@ package render
 
 import (
 	"encoding/gob"
-	"github.com/alexedwards/scs/v2"
-	"github.com/tsawler/bookings/internal/config"
-	"github.com/tsawler/bookings/internal/models"
 	"log"
 	"net/http"
 	"os"
 	"testing"
 	"time"
+
+	"github.com/alexedwards/scs/v2"
+	"github.com/pauldin91/GoWebApp/internal/config"
+	"github.com/pauldin91/GoWebApp/internal/models"
 )
 
 var session *scs.SessionManager

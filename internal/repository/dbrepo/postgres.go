@@ -2,8 +2,9 @@ package dbrepo
 
 import (
 	"context"
-	"github.com/tsawler/bookings/internal/models"
 	"time"
+
+	"github.com/pauldin91/GoWebApp/internal/models"
 )
 
 func (m *postgresDBRepo) AllUsers() bool {

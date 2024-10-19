@@ -9,12 +9,12 @@ import (
 	"time"
 
 	"github.com/alexedwards/scs/v2"
-	"github.com/tsawler/bookings/internal/config"
-	"github.com/tsawler/bookings/internal/driver"
-	"github.com/tsawler/bookings/internal/handlers"
-	"github.com/tsawler/bookings/internal/helpers"
-	"github.com/tsawler/bookings/internal/models"
-	"github.com/tsawler/bookings/internal/render"
+	"github.com/pauldin91/GoWebApp/internal/config"
+	"github.com/pauldin91/GoWebApp/internal/driver"
+	"github.com/pauldin91/GoWebApp/internal/handlers"
+	"github.com/pauldin91/GoWebApp/internal/helpers"
+	"github.com/pauldin91/GoWebApp/internal/models"
+	"github.com/pauldin91/GoWebApp/internal/render"
 )
 
 const portNumber = ":8080"
