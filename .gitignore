@@ -3,3 +3,4 @@ images
 .vscode
 database.yml
 schema.sql
+.DS_Store
