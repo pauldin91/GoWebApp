@@ -2,6 +2,7 @@ package dbrepo
 
 import (
 	"context"
+	"log"
 	"time"
 
 	"github.com/pauldin91/GoWebApp/internal/models"
@@ -51,6 +52,8 @@ func (m *postgresDBRepo) InsertRoomRestriction(r models.RoomRestriction) error {
 			values
 			($1, $2, $3, $4, $5, $6, $7)`
 
+	log.Println(stmt)
+
 	_, err := m.DB.ExecContext(ctx, stmt,
 		r.StartDate,
 		r.EndDate,
@@ -62,6 +65,7 @@ func (m *postgresDBRepo) InsertRoomRestriction(r models.RoomRestriction) error {
 	)
 
 	if err != nil {
+		log.Println(err)
 		return err
 	}
 	return nil

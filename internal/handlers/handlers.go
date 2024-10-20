@@ -2,6 +2,7 @@ package handlers
 
 import (
 	"encoding/json"
+	"fmt"
 	"net/http"
 	"strconv"
 	"strings"
@@ -106,8 +107,6 @@ func (m *Repository) PostReservation(w http.ResponseWriter, r *http.Request) {
 	sd := r.Form.Get("start_date")
 	ed := r.Form.Get("end_date")
 
-	// 2020-01-01 -- 01/02 03:04:05PM '06 -0700
-
 	layout := "2006-01-02"
 
 	startDate, err := time.Parse(layout, sd)
@@ -164,6 +163,14 @@ func (m *Repository) PostReservation(w http.ResponseWriter, r *http.Request) {
 		http.Redirect(w, r, "/", http.StatusTemporaryRedirect)
 		return
 	}
+	htmlMessage := fmt.Sprintf(`
+		<strong>Reservation Confirmation</strong>
+		Dear %s: <br>
+		This is to confirm your reservation fro %s to %s
+	`, reservation.FirstName,
+		reservation.StartDate.Format("2006-01-02"),
+		reservation.EndDate.Format("2006-01-02"))
+	//send mail notification
 
 	restriction := models.RoomRestriction{
 		StartDate:     startDate,
@@ -172,7 +179,14 @@ func (m *Repository) PostReservation(w http.ResponseWriter, r *http.Request) {
 		ReservationID: newReservationID,
 		RestrictionID: 1,
 	}
+	msg := models.MailData{
+		To:      reservation.Email,
+		From:    "no-reply@forty-smith.com",
+		Subject: "Reservation Confirmation",
+		Body:    htmlMessage,
+	}
 
+	m.App.MailChan <- msg
 	err = m.DB.InsertRoomRestriction(restriction)
 	if err != nil {
 		m.App.Session.Put(r.Context(), "error", "can't insert room restriction!")
