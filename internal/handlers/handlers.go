@@ -3,6 +3,7 @@ package handlers
 import (
 	"encoding/json"
 	"fmt"
+	"log"
 	"net/http"
 	"strconv"
 	"strings"
@@ -179,14 +180,26 @@ func (m *Repository) PostReservation(w http.ResponseWriter, r *http.Request) {
 		ReservationID: newReservationID,
 		RestrictionID: 1,
 	}
-	msg := models.MailData{
-		To:      reservation.Email,
-		From:    "no-reply@forty-smith.com",
-		Subject: "Reservation Confirmation",
-		Body:    htmlMessage,
+	msgCustomer := models.MailData{
+		To:       reservation.Email,
+		From:     "no-reply@forty-smyth.com",
+		Subject:  "Reservation Confirmation",
+		Body:     htmlMessage,
+		Template: "welcome.html",
+	}
+	msgPropertyOwner := models.MailData{
+		To:      "me@here.com",
+		From:    "no-reply@forty-smyth.com",
+		Subject: "Reservation Notification",
+		Body: fmt.Sprintf("A reservation has been made from %s with dates: fram %s to %s",
+			reservation.FirstName,
+			reservation.StartDate.Format("2006-01-02"),
+			reservation.EndDate.Format("2006-01-02")),
 	}
 
-	m.App.MailChan <- msg
+	m.App.MailChan <- msgCustomer
+	m.App.MailChan <- msgPropertyOwner
+
 	err = m.DB.InsertRoomRestriction(restriction)
 	if err != nil {
 		m.App.Session.Put(r.Context(), "error", "can't insert room restriction!")
@@ -428,4 +441,42 @@ func (m *Repository) BookRoom(w http.ResponseWriter, r *http.Request) {
 	m.App.Session.Put(r.Context(), "reservation", res)
 
 	http.Redirect(w, r, "/make-reservation", http.StatusSeeOther)
+}
+
+func (m *Repository) ShowLogin(w http.ResponseWriter, r *http.Request) {
+	render.Template(w, r, "login.page.tmpl", &models.TemplateData{
+		Form: forms.New(nil),
+	})
+}
+func (m *Repository) Login(w http.ResponseWriter, r *http.Request) {
+	_ = m.App.Session.RenewToken(r.Context())
+
+	err := r.ParseForm()
+
+	if err != nil {
+		log.Println(err)
+	}
+	email := r.Form.Get("email")
+	password := r.Form.Get("password")
+	form := forms.New(r.PostForm)
+	form.Required("email", "password")
+	form.IsEmail("email")
+	if !form.Valid() {
+		render.Template(w, r, "login.page.tmpl", &models.TemplateData{
+			Form: form,
+		})
+		return
+	}
+
+	id, _, err := m.DB.Authenticate(email, password)
+
+	if err != nil {
+		log.Println(err)
+		m.App.Session.Put(r.Context(), "error", "Invalid login credentials")
+		http.Redirect(w, r, "/user/login", http.StatusSeeOther)
+	}
+
+	m.App.Session.Put(r.Context(), "user_id", id)
+	m.App.Session.Put(r.Context(), "flash", "Logged in success")
+	http.Redirect(w, r, "/", http.StatusSeeOther)
 }

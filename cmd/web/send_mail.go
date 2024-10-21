@@ -1,7 +1,10 @@
 package main
 
 import (
+	"fmt"
 	"log"
+	"os"
+	"strings"
 	"time"
 
 	"github.com/pauldin91/GoWebApp/internal/models"
@@ -34,7 +37,17 @@ func sendMsg(m models.MailData) {
 
 	email.SetFrom(m.From).AddTo(m.To).SetSubject(m.Subject)
 
-	email.SetBody(mail.TextHTML, m.Body)
+	if m.Template == "" {
+		email.SetBody(mail.TextHTML, m.Body)
+	} else {
+		data, err := os.ReadFile(fmt.Sprintf("./email-templates/%s", m.Template))
+		if err != nil {
+			app.ErrorLog.Println(err)
+		}
+		mailTemplate := string(data)
+		msgToSend := strings.Replace(mailTemplate, "[%body%]", m.Body, 1)
+		email.SetBody(mail.TextHTML, msgToSend)
+	}
 
 	err = email.Send(client)
 
