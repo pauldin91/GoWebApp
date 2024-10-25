@@ -30,7 +30,7 @@ func main() {
 	if err != nil {
 		log.Fatal(err)
 	}
-
+	app.UseCache = false
 	defer db.SQL.Close()
 
 	defer close(app.MailChan)
