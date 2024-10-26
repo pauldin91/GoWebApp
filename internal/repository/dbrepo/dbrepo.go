@@ -29,5 +29,3 @@ func NewTestingsRepo(a *config.AppConfig) repository.DatabaseRepo {
 		App: a,
 	}
 }
-
-
