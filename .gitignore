@@ -3,3 +3,4 @@ images
 database.yml
 schema.sql
 .DS_Store
+bookings
